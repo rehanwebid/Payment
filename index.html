@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+    <title>Payment NoaFuture</title>
+    
+    <!-- Mencegah inspect element / view source via shortcut -->
+    <script>
+        // Mencegah klik kanan
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Mencegah Ctrl+U, Ctrl+S, Ctrl+Shift+I, Ctrl+Shift+J, F12
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+U (view source)
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+S (save)
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+I (dev tools)
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+J (console)
+            if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+                e.preventDefault();
+                return false;
+            }
+            // F12
+            if (e.key === 'F12') {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+C (inspect element)
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // Mencegah drag gambar
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Mencegah select text
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    </script>
+    
+    <style>
+        /* IMPORTANT: KODE UTAMA - JANGAN DIHAPUS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+        body {
+            position: relative;
+        }
+        .background-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(15%);
+            pointer-events: none;
+            -webkit-user-drag: none;
+            user-drag: none;
+            pointer-events: none;
+        }
+        .profile-img {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            pointer-events: none;
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+        .text {
+            position: absolute;
+            top: 20px;
+            left: 70px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            color: white;
+            font-size: 14px;
+            line-height: 40px;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .badge {
+            position: absolute;
+            top: 28px;
+            right: 20px;
+            background-color: black;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-family: Arial, sans-serif;
+            color: white;
+            font-size: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            pointer-events: none;
+        }
+        .blinking-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #1BBDFE;
+            border-radius: 50%;
+            animation: blink 1s step-start infinite;
+            box-shadow: 0 0 5px #1BBDFE, 0 0 10px #1BBDFE;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .center-img {
+            position: absolute;
+            top: 33%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+        /* IMPORTANT: TOMBOL INTERAKTIF */
+        .rectangle {
+            position: absolute;
+            top: calc(30% + 125px + 30px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            border: 0.5px solid #888888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
+        }
+        .rectangle:active {
+            transform: translateX(-50%) scale(0.97);
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        .rectangle2 {
+            position: absolute;
+            top: calc(30% + 125px + 30px + 40px + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            border: 0.5px solid #888888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
+        }
+        .rectangle2:active {
+            transform: translateX(-50%) scale(0.97);
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        .rectangle3 {
+            position: absolute;
+            top: calc(30% + 125px + 30px + 40px + 10px + 40px + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            border: 0.5px solid #888888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
+        }
+        .rectangle3:active {
+            transform: translateX(-50%) scale(0.97);
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        .small-img {
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+            pointer-events: none;
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+        .text-name {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+            pointer-events: none;
+        }
+        /* IMPORTANT: FOOTER PENTING */
+        .footer {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #aaaaaa;
+            font-family: 'Roboto', sans-serif;
+            font-size: 10px;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .icon {
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            background-color: #aaaaaa;
+            mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>') no-repeat center;
+            mask-size: contain;
+            -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>') no-repeat center;
+            -webkit-mask-size: contain;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- IMPORTANT: BACKGROUND UTAMA -->
+    <img class="background-img" src="Background.jpeg" alt="background">
+    <!-- IMPORTANT: PROFIL USER -->
+    <img class="profile-img" src="Profil.png" alt="profile">
+    <div class="text">NoaFuture</div>
+    <div class="badge">
+        <span>payment gateway</span>
+        <div class="blinking-dot"></div>
+    </div>
+    
+    <!-- IMPORTANT: FOTO UTAMA DINAMIS -->
+    <img class="center-img" id="centerImage" src="DANA.png" alt="main">
+    
+    <!-- IMPORTANT: TOMBOL PILIHAN PEMBAYARAN -->
+    <div class="rectangle" id="btnDana">
+        <img class="small-img" src="Ikon DANA.png" alt="dana">
+        <div class="text-name">DANA</div>
+    </div>
+    
+    <div class="rectangle2" id="btnGopay">
+        <img class="small-img" src="Ikon GOPAY.png" alt="gopay">
+        <div class="text-name">GOPAY</div>
+    </div>
+    
+    <div class="rectangle3" id="BtnQris">
+        <img class="small-img" src="Ikon QRIS.png" alt="qris">
+        <div class="text-name">QRIS</div>
+    </div>
+
+    <!-- IMPORTANT: INFORMASI PENTING -->
+    <div class="footer">
+        <div class="icon"></div>
+        <span>Screenshot bukti transaksi untuk di jadikan bukti</span>
+    </div>
+
+    <!-- IMPORTANT: SCRIPT UTAMA JANGAN DIHAPUS -->
+    <script>
+        const images = {
+            dana: "DANA.png",
+            gopay: "GOPAY.png",
+            qris: "QRIS.png"
+        };
+
+        const centerImg = document.getElementById('centerImage');
+
+        document.getElementById('btnDana').addEventListener('click', () => {
+            centerImg.style.opacity = '0';
+            setTimeout(() => {
+                centerImg.src = images.dana;
+                centerImg.style.opacity = '1';
+            }, 150);
+        });
+
+        document.getElementById('btnGopay').addEventListener('click', () => {
+            centerImg.style.opacity = '0';
+            setTimeout(() => {
+                centerImg.src = images.gopay;
+                centerImg.style.opacity = '1';
+            }, 150);
+        });
+
+        document.getElementById('BtnQris').addEventListener('click', () => {
+            centerImg.style.opacity = '0';
+            setTimeout(() => {
+                centerImg.src = images.qris;
+                centerImg.style.opacity = '1';
+            }, 150);
+        });
+        
+        // Proteksi tambahan untuk drag image
+        window.addEventListener('load', function() {
+            const allImages = document.querySelectorAll('img');
+            allImages.forEach(img => {
+                img.setAttribute('draggable', 'false');
+                img.style.webkitUserDrag = 'none';
+                img.style.userDrag = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
